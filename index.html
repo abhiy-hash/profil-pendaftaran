@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PROFIL DAN FORM PENDAFTARAN PMR WIRA SKANEWO</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ===== RESET & GLOBAL ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #3e1a1a;
+            color: #fdf6f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .container-full {
+            width: 100%;
+            padding: 0;
+        }
+
+        /* ===== BACKGROUND IMAGE ===== */
+        .image-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background: #2c1212;
+        }
+
+        .image-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-background .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(62, 26, 26, 0.65);
+            z-index: 1;
+        }
+
+        /* ===== KONTEN UTAMA ===== */
+        .content {
+            position: relative;
+            z-index: 2;
+            padding-bottom: 40px;
+        }
+
+        /* ===== SECTION UMUM ===== */
+        .section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            text-align: center;
+            color: #fdf6f0;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            border-bottom: 3px solid #8b1a1a;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* ===== TOP BAR (MAROON + NAVIGASI) ===== */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: #8b1a1a;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #fdf6f0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            min-height: 70px;
+        }
+
+        /* ===== MENU NAVIGASI (DI DALAM TOP BAR) ===== */
+        .nav-toggle {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px;
+            flex-shrink: 0;
+        }
+
+        .nav-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .nav-toggle .bar {
+            width: 28px;
+            height: 3px;
+            background: #fdf6f0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .top-bar-spacer {
+            flex: 1;
+        }
+
+        /* ===== OVERLAY MENU ===== */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .menu-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ===== DROPDOWN MENU ===== */
+        .dropdown-menu {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(30, 10, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 2px solid #8b1a1a;
+            border-radius: 16px;
+            padding: 20px 25px;
+            min-width: 200px;
+            display: none;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .dropdown-menu.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu .menu-divider {
+            border: none;
+            border-top: 2px solid #8b1a1a;
+            margin: 12px 0 16px 0;
+            width: 100%;
+        }
+
+        .dropdown-menu .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dropdown-menu .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #fdf6f0;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-menu .menu-item i {
+            font-size: 1.5rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        .dropdown-menu .menu-item:hover {
+            background: rgba(139, 26, 26, 0.4);
+            transform: translateX(4px);
+        }
+
+        .dropdown-menu .menu-item .fa-whatsapp {
+            color: #25D366;
+        }
+        .dropdown-menu .menu-item .fa-tiktok {
+            color: #ffffff;
+        }
+        .dropdown-menu .menu-item .fa-instagram {
+            color: #E4405F;
+        }
+        .dropdown-menu .menu-item .fa-google {
+            color: #ffffff;
+        }
+        .dropdown-menu .menu-item .fa-images {
+            color: #ffb347;
+        }
+
+        .menu-close-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+            background: rgba(139, 26, 26, 0.3);
+            border: 1px solid #8b1a1a;
+            border-radius: 10px;
+            color: #fdf6f0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            margin-top: 6px;
+        }
+
+        .menu-close-btn:hover {
+            background: rgba(139, 26, 26, 0.6);
+        }
+
+        .menu-close-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            text-align: center;
+            padding: 130px 20px 60px 20px;
+        }
+
+        .hero-inner {
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ===== TEKS SAMBUTAN DI ATAS ===== */
+        .welcome-section {
+            width: 100%;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .welcome-text {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fdf6f0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .welcome-sub {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #fdf6f0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .logo-pmr,
+        .logo-sekolah {
+            object-fit: contain;
+        }
+
+        .title-shiny {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #ff1a1a;
+            text-shadow: 0 0 10px rgba(255, 26, 26, 0.4);
+            margin: 10px 0 30px 0;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg,
+                    #ff1a1a 0%,
+                    #ffcccc 25%,
+                    #ff1a1a 50%,
+                    #ffcccc 75%,
+                    #ff1a1a 100%);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shineMove 4s linear infinite;
+        }
+
+        @keyframes shineMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 300% 50%;
+            }
+        }
+
+        .btn-gabung {
+            display: inline-block;
+            padding: 16px 48px;
+            background: #8b1a1a;
+            color: #fdf6f0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid #fdf6f0;
+            box-shadow: 0 4px 20px rgba(139, 26, 26, 0.6);
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+
+        .btn-gabung i {
+            margin-right: 10px;
+        }
+
+        .btn-gabung:hover {
+            background: #fdf6f0;
+            color: #8b1a1a;
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(139, 26, 26, 0.8);
+        }
+
+        /* ===== SCROLL HINT ===== */
+        .scroll-hint {
+            font-size: 1rem;
+            color: rgba(253, 246, 240, 0.7);
+            font-style: italic;
+            letter-spacing: 1px;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            opacity: 1;
+            transform: translateY(0);
+            margin-top: 0;
+        }
+
+        .scroll-hint.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        .scroll-hint i {
+            display: block;
+            margin-top: 4px;
+            font-size: 1.2rem;
+            animation: bounceDown 2s ease-in-out infinite;
+        }
+
+        @keyframes bounceDown {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(8px);
+                opacity: 1;
+            }
+        }
+
+        /* ===== STRUKTUR (FULL LAYAR - TRANSPARAN) ===== */
+        .struktur {
+            background: transparent;
+            padding: 0;
+            margin: 0;
+        }
+
+        .struktur .container {
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .struktur-img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+        }
+
+        /* ===== TATA CARA (9:16 - TRANSPARAN) ===== */
+        .tata-cara {
+            padding: 0;
+            background: transparent;
+        }
+
+        .full-canvas {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 9 / 16;
+            object-fit: contain;
+            display: block;
+            background: transparent;
+        }
+
+        /* ===== PORTOFOLIO ===== */
+        .portofolio {
+            background: transparent;
+            padding: 60px 20px;
+        }
+
+        .portofolio .container {
+            text-align: left;
+        }
+
+        .portofolio .section-title {
+            display: block;
+            text-align: center;
+        }
+
+        .porto-item {
+            margin-bottom: 50px;
+            background: #CA1302;
+            padding: 30px 35px;
+            border-radius: 16px;
+            border-left: 6px solid #fdf6f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .porto-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .porto-subtitle {
+            font-size: 1.8rem;
+            color: #fdf6f0;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .porto-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #fdf6f0;
+        }
+
+        .porto-body strong {
+            color: #ffcccc;
+        }
+
+        .porto-body ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 12px 0;
+        }
+
+        .porto-body ul li {
+            padding: 6px 0 6px 28px;
+            position: relative;
+        }
+
+        .porto-body ul li::before {
+            content: "▸";
+            color: #fdf6f0;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .porto-body ol {
+            padding-left: 28px;
+            margin: 12px 0;
+        }
+
+        .porto-body ol li {
+            padding: 6px 0;
+        }
+
+        /* ===== FOOTER (TRANSPARAN + BLUR) ===== */
+        .footer {
+            background: rgba(30, 10, 10, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 30px 20px;
+            color: #fdf6f0;
+            font-size: 0.95rem;
+            border-top: 2px solid rgba(253, 246, 240, 0.3);
+        }
+
+        .footer i {
+            margin: 0 4px;
+        }
+
+        /* ============================================================ */
+        /* ===== POPUP SCRAPBOOK (FULL LAYAR) ===== */
+        /* ============================================================ */
+        .scrapbook-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: #0a0a0a;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 20px 30px 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .scrapbook-popup.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* ===== KONTEN POPUP ===== */
+        .scrapbook-popup .popup-content {
+            width: 100%;
+            max-width: 1100px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        /* ===== JUDUL POPUP ===== */
+        .scrapbook-popup .popup-title {
+            color: #fdf6f0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .scrapbook-popup .popup-title span {
+            color: #ff4d4d;
+        }
+
+        /* ===== BUKU (IFRAME) ===== */
+        .scrapbook-popup .book-wrapper {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(139, 26, 26, 0.2);
+            background: #1a0a0a;
+        }
+
+        .scrapbook-popup .book-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* ===== TOMBOL KEMBALI (DI TENGAH BAWAH) ===== */
+        .scrapbook-popup .btn-back-popup {
+            margin-top: 16px;
+            background: rgba(139, 26, 26, 0.8);
+            color: #fdf6f0;
+            border: 2px solid rgba(253, 246, 240, 0.3);
+            padding: 10px 36px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-family: 'Segoe UI', sans-serif;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .scrapbook-popup .btn-back-popup:hover {
+            background: #a52222;
+            transform: scale(1.05);
+            border-color: #fdf6f0;
+        }
+
+        /* ============================================================ */
+        /* ===== RESPONSIVE ===== */
+        /* ============================================================ */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 10px 15px;
+                min-height: 60px;
+            }
+
+            .nav-toggle {
+                width: 44px;
+                height: 44px;
+            }
+
+            .nav-toggle .bar {
+                width: 24px;
+                height: 2.5px;
+            }
+
+            .hero {
+                padding: 110px 20px 40px 20px;
+            }
+
+            .welcome-text {
+                font-size: 2rem;
+            }
+
+            .welcome-sub {
+                font-size: 1.3rem;
+            }
+
+            .title-shiny {
+                font-size: 2.6rem;
+            }
+
+            .btn-gabung {
+                padding: 14px 32px;
+                font-size: 1rem;
+                margin-bottom: 25px;
+            }
+
+            .porto-item {
+                padding: 20px;
+            }
+
+            .porto-subtitle {
+                font-size: 1.4rem;
+            }
+
+            .porto-body {
+                font-size: 1rem;
+            }
+
+            .logo-container {
+                gap: 20px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .dropdown-menu {
+                left: 10px;
+                right: 10px;
+                min-width: unset;
+                padding: 16px 18px;
+            }
+
+            .dropdown-menu .menu-item {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+
+            .scroll-hint {
+                font-size: 0.85rem;
+            }
+
+            .scrapbook-popup {
+                padding: 12px 12px 20px 12px;
+            }
+
+            .scrapbook-popup .popup-title {
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+            }
+
+            .scrapbook-popup .book-wrapper {
+                border-radius: 8px;
+            }
+
+            .scrapbook-popup .btn-back-popup {
+                font-size: 0.85rem;
+                padding: 8px 28px;
+                margin-top: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-bar {
+                padding: 8px 12px;
+                min-height: 50px;
+            }
+
+            .nav-toggle {
+                width: 38px;
+                height: 38px;
+            }
+
+            .nav-toggle .bar {
+                width: 20px;
+                height: 2px;
+            }
+
+            .hero {
+                padding: 90px 15px 30px 15px;
+            }
+
+            .welcome-text {
+                font-size: 1.6rem;
+            }
+
+            .welcome-sub {
+                font-size: 1.1rem;
+            }
+
+            .title-shiny {
+                font-size: 2rem;
+            }
+
+            .btn-gabung {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+            }
+
+            .porto-item {
+                padding: 16px;
+            }
+
+            .dropdown-menu {
+                padding: 14px 14px;
+            }
+
+            .dropdown-menu .menu-item {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+                gap: 10px;
+            }
+
+            .dropdown-menu .menu-item i {
+                font-size: 1.2rem;
+                width: 24px;
+            }
+
+            .scroll-hint {
+                font-size: 0.75rem;
+            }
+
+            .scrapbook-popup {
+                padding: 8px 8px 16px 8px;
+            }
+
+            .scrapbook-popup .popup-title {
+                font-size: 0.75rem;
+                margin-bottom: 6px;
+            }
+
+            .scrapbook-popup .book-wrapper {
+                border-radius: 6px;
+            }
+
+            .scrapbook-popup .btn-back-popup {
+                font-size: 0.75rem;
+                padding: 6px 20px;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== BACKGROUND ===== -->
+    <div class="image-background">
+        <img src="https://i.ibb.co.com/zTRb7Gj7/a877f06851f270d76a89dcc18804a216.jpg" alt="Background" id="bgImage" />
+        <div class="overlay"></div>
+    </div>
+
+    <!-- ===== TOP BAR (MAROON + NAVIGASI) ===== -->
+    <header class="top-bar" id="topBar">
+        <button class="nav-toggle" id="navToggle" aria-label="Buka Menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <div class="top-bar-spacer"></div>
+    </header>
+
+    <!-- ===== MENU OVERLAY & DROPDOWN ===== -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+        <button class="menu-close-btn" id="menuCloseBtn">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+        <hr class="menu-divider" />
+        <div class="menu-items">
+            <a href="#" class="menu-item" id="menuForm" target="_blank">
+                <i class="fab fa-google"></i>
+                <span>Form Pendaftaran</span>
+            </a>
+            <a href="#" class="menu-item" id="menuWa1" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+                <span>Kak Vina</span>
+            </a>
+            <a href="#" class="menu-item" id="menuWa2" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+                <span>Kak Nikma</span>
+            </a>
+            <a href="#" class="menu-item" id="menuTiktok" target="_blank">
+                <i class="fab fa-tiktok"></i>
+                <span>TikTok PMR</span>
+            </a>
+            <a href="#" class="menu-item" id="menuIg" target="_blank">
+                <i class="fab fa-instagram"></i>
+                <span>Instagram PMR</span>
+            </a>
+            <button class="menu-item" id="menuAlbum">
+                <i class="fas fa-images"></i>
+                <span>Album PMR</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ===== POPUP SCRAPBOOK (FULL LAYAR) ===== -->
+    <!-- ============================================================ -->
+    <div class="scrapbook-popup" id="scrapbookPopup">
+        <div class="popup-content">
+
+            <!-- Judul -->
+            <div class="popup-title">
+                <span>MEMORIES BOOK</span> PMR WIRA
+            </div>
+
+            <!-- Buku (FlipHTML5 Embed) -->
+            <div class="book-wrapper">
+                <iframe
+                src="https://online.fliphtml5.com/Abhiy_hash/PMR-Wira_20260716_213151_0000/"
+                title="MEMORIES BOOK PMR WIRA"
+                seamless="seamless"
+                scrolling="no"
+                frameborder="0"
+                allowtransparency="true"
+                allowfullscreen="true"
+                loading="lazy"
+                ></iframe>
+            </div>
+
+            <!-- Tombol Kembali (Tengah Bawah) -->
+            <button class="btn-back-popup" id="btnBackPopup">
+                ← Kembali
+            </button>
+
+        </div>
+    </div>
+
+    <!-- ===== KONTEN UTAMA ===== -->
+    <main class="content">
+
+        <!-- ===== HERO SECTION ===== -->
+        <section class="hero" id="hero">
+            <div class="hero-inner">
+
+                <!-- ===== TEKS SAMBUTAN DI ATAS (RATA TENGAH) ===== -->
+                <div class="welcome-section">
+                    <h2 class="welcome-text">SELAMAT DATANG</h2>
+                    <h2 class="welcome-text" style="font-size: 1.5rem; margin-top:5px;">DI FORMULIR PENDAFTARAN & PORTOFOLIO PMR WIRA</h2>
+                    <p class="welcome-sub">BERIKUT ADALAH PORTOFOLIO KAMI</p>
+                </div>
+
+                <!-- ===== LOGO ===== -->
+                <div class="logo-container">
+                    <img src="" alt="Logo PMR" class="logo-pmr" id="logoPmr" />
+                    <img src="" alt="Logo Sekolah" class="logo-sekolah" id="logoSekolah" />
+                </div>
+
+                <!-- ===== TEKS PMR WIRA SKANEWO ===== -->
+                <h1 class="title-shiny" id="titleText">PMR WIRA SMK NEGERI 1 WONOREJO</h1>
+
+                <!-- ===== TOMBOL GABUNG ===== -->
+                <a href="#" class="btn-gabung" id="btnGabung" target="_blank">
+                    <i class="fas fa-hand-holding-heart"></i> Gabung Sekarang
+                </a>
+
+                <!-- ===== SCROLL HINT ===== -->
+                <p class="scroll-hint" id="scrollHint">
+                    scroll ke bawah untuk melihat
+                    <i class="fas fa-chevron-down"></i>
+                </p>
+
+            </div>
+        </section>
+
+        <!-- ===== STRUKTUR (FULL LAYAR - TRANSPARAN) ===== -->
+        <section class="section struktur" id="struktur" style="padding:0; margin:0; background:transparent;">
+            <div class="container" style="max-width:100%; padding:0; margin:0;">
+                <img src="" alt="Struktur PMR" class="struktur-img" id="strukturImg" />
+            </div>
+        </section>
+
+        <!-- ===== GAMBAR 9:16 (TRANSPARAN) ===== -->
+        <section class="section tata-cara" id="tataCara" style="background:transparent; padding:0;">
+            <div class="container-full">
+                <img src="" alt="Tata Cara Pendaftaran" class="full-canvas" id="tataCaraImg" />
+            </div>
+        </section>
+
+        <!-- ===== PORTOFOLIO ===== -->
+        <section class="section portofolio" id="portofolio" style="background:transparent;">
+            <div class="container">
+                <h2 class="section-title">Portofolio PMR</h2>
+
+                <div class="porto-item">
+                    <h3 class="porto-subtitle">Apa itu PMR?</h3>
+                    <div class="porto-body" id="isiApaItu"></div>
+                </div>
+
+                <div class="porto-item">
+                    <h3 class="porto-subtitle">Tujuan PMR</h3>
+                    <div class="porto-body" id="isiTujuan"></div>
+                </div>
+
+                <div class="porto-item">
+                    <h3 class="porto-subtitle">Materi PMR</h3>
+                    <div class="porto-body" id="isiMateri"></div>
+                </div>
+
+                <div class="porto-item">
+                    <h3 class="porto-subtitle">Visi &amp; Misi</h3>
+                    <div class="porto-body" id="isiVisiMisi"></div>
+                </div>
+
+                <div class="porto-item">
+                    <h3 class="porto-subtitle">Yuk Gabung PMR!</h3>
+                    <div class="porto-body" id="isiAjakan"></div>
+                </div>
+
+                <div class="porto-item">
+                    <h3 class="porto-subtitle">Prestasi PMR</h3>
+                    <div class="porto-body" id="isiPrestasi"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== FOOTER (TRANSPARAN + BLUR) ===== -->
+        <footer class="footer">
+            <p>&copy; 2026 PMR WIRA SKANEWO | by: ABHIY_HASH </p>
+        </footer>
+
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+    <script>
+        // ===== KONFIGURASI =====
+        const CONFIG = {
+            bgImageUrl: 'https://i.ibb.co.com/zTRb7Gj7/a877f06851f270d76a89dcc18804a216.jpg',
+            logoPmrUrl: 'https://i.ibb.co.com/LWQP30d/20260713-211311.png',
+            logoSekolahUrl: 'https://i.ibb.co.com/qYnt1tq5/20260704-161147.png',
+            logoPmrWidth: '220px',
+            logoSekolahWidth: '210px',
+            strukturImgUrl: 'https://i.ibb.co.com/N6TfcZfd/Kuning-Biru-Modern-Struktur-Organisasi-A4-20260714-221350-0000.png',
+            tataCaraImgUrl: 'https://i.ibb.co.com/Dg76BP99/f8b7568e-7e3b-4cf1-ac3e-20505b693166.jpg',
+            googleFormUrl: 'https://forms.gle/2QNN4up2dUJ45dac6',
+            waAdmin1: '6283131216487',
+            waAdmin2: '6285708624746',
+            tiktokUrl: 'https://www.tiktok.com/@wiraskanewo?_r=1&_t=ZS-981eGEsU3ko',
+            instagramUrl: 'https://www.instagram.com/pmrskanewo_official?igsh=YmVrODhoOGJobnNh',
+
+            teksApaItu: `<p>PMR adalah singkatan dari <strong>Palang Merah Remaja</strong>. Ini adalah wadah pembinaan bagi remaja di Indonesia yang diselenggarakan oleh <strong>Palang Merah Indonesia (PMI)</strong>.</p>
+                <p>Intinya, PMR adalah organisasi kepemudaan di bawah PMI yang bertujuan membentuk remaja berkarakter kemanusiaan, peduli sesama, dan terampil menolong, sekaligus mempersiapkan mereka menjadi relawan PMI di masa depan.</p>`,
+
+            teksTujuan: `<p><strong>Tujuan utama Palang Merah Remaja (PMR)</strong> adalah membangun dan mengembangkan karakter kepalangmerahan pada remaja, agar mereka siap menjadi relawan Palang Merah Indonesia (PMI) di masa depan. Ini adalah investasi jangka panjang untuk menciptakan generasi penerus yang peduli dan tanggap terhadap sesama.</p>
+                <p><strong>Tujuan Utama PMR</strong></p>
+                <p>Secara lebih rinci, tujuan PMR adalah membina para anggotanya agar memiliki:</p>
+                <ul>
+                    <li><strong>Karakter Kemanusiaan:</strong> Menanamkan nilai-nilai seperti kepedulian, empati, dan jiwa sosial sejak usia dini.</li>
+                    <li><strong>Keterampilan Praktis:</strong> Membekali remaja dengan pengetahuan dan keterampilan di bidang kesehatan, pertolongan pertama, dan kesiapsiagaan bencana.</li>
+                    <li><strong>Kader Masa Depan:</strong> Mempersiapkan anggota PMR untuk menjadi kader dan pemimpin PMI di masa mendatang.</li>
+                </ul>`,
+
+            teksMateri: `<p><strong>Materi Pokok PMR</strong></p>
+                <p><strong>1. Gerakan Kepalangmerahan (Sejarah &amp; Prinsip)</strong></p>
+                <p>Anggota PMR mempelajari sejarah lahirnya Palang Merah, prinsip-prinsip dasar kemanusiaan, serta makna dan penggunaan lambang-lambangnya. Ini adalah fondasi untuk memahami identitas dan tujuan organisasi.</p>
+                <p><strong>2. Pertolongan Pertama (P3K)</strong></p>
+                <p>Ini adalah materi inti dan paling praktis. Anggota PMR dilatih untuk menjadi penolong pertama yang sigap. Keterampilan yang diajarkan meliputi:</p>
+                <ul>
+                    <li><strong>Penilaian Awal (Initial Assessment):</strong> Cara menilai situasi dan kondisi korban dengan aman (memeriksa kesadaran, jalan napas, pernapasan, dan sirkulasi).</li>
+                    <li><strong>Penanganan Darurat:</strong> Menangani pingsan, mimisan, dan serangan asma.</li>
+                    <li><strong>Perawatan Cedera:</strong> Membersihkan luka, menghentikan pendarahan, membalut luka dengan benar, serta menangani keseleo dan patah tulang dengan pembidaian darurat menggunakan bahan seadanya.</li>
+                </ul>
+                <p><strong>3. Kesehatan dan Kesejahteraan Remaja (Kesehatan Remaja)</strong></p>
+                <p>Materi ini berfokus pada isu-isu kesehatan yang relevan dengan usia remaja, seperti menjaga pola hidup bersih dan sehat (PHBS), serta menjadi pendidikan sebaya (peer educator) untuk isu kesehatan.</p>
+                <p><em>...dan masih banyak lagi materi menarik lainnya. Yuk, join ke PMR WIRA SKANEWO!</em></p>`,
+
+            teksVisiMisi: `<p><strong>Visi dan Misi Palang Merah Remaja (PMR)</strong></p>
+                <p>Visi besarnya adalah menjadikan kader PMI yang mampu dan siap menjalankan kegiatan sosial kemanusiaan sesuai dengan prinsip-prinsip dasar Gerakan Palang Merah dan Bulan Sabit Merah Internasional.</p>
+                <p><strong>Misi PMR:</strong></p>
+                <ul>
+                    <li><strong>Membangun Karakter Kemanusiaan:</strong> Menanamkan dan mengembangkan jiwa sosial, rasa kesukarelaan, dan kepedulian terhadap sesama sesuai dengan prinsip dasar gerakan dan Tri Bhakti PMR.</li>
+                    <li><strong>Mengembangkan Keterampilan:</strong> Meningkatkan keterampilan hidup sehat dan kemampuan teknis di bidang pertolongan pertama, kesehatan, dan kesiapsiagaan bencana.</li>
+                    <li><strong>Mewujudkan Bakti Nyata:</strong> Melatih anggota untuk berkarya dan berbakti secara nyata di lingkungan masyarakat dan sekolah.</li>
+                    <li><strong>Mempererat Persahabatan:</strong> Membangun dan mempererat persahabatan, baik di tingkat nasional maupun internasional, melalui berbagai kegiatan kepemudaan.</li>
+                    <li><strong>Mempersiapkan Kader dan Pemimpin:</strong> Menyiapkan anggota PMR untuk menjadi kader, relawan, dan calon pemimpin PMI yang handal di masa depan.</li>
+                </ul>
+                <p><strong>✨ Inti dari Semua Itu: Tri Bhakti PMR</strong></p>
+                <ol>
+                    <li>Meningkatkan keterampilan hidup sehat.</li>
+                    <li>Berkarya dan berbakti di masyarakat.</li>
+                    <li>Mempererat persahabatan nasional dan internasional.</li>
+                </ol>`,
+
+            teksAjakan: `<p><strong>Yuk, jadilah bagian dari PMR WIRA SKANEWO!</strong></p>
+                <p>Di sini, kamu tidak hanya belajar tentang pertolongan pertama dan kesehatan, tapi juga mengembangkan jiwa kepemimpinan, persahabatan, dan kepedulian sosial. Bersama PMR, kita siap menjadi pahlawan kemanusiaan.</p>
+                <p>Tunggu apa lagi? Daftarkan dirimu sekarang dan raih pengalaman berharga bersama PMR WIRA SKANEWO!</p>`,
+
+            teksPrestasi: `<p>PMR WIRA SKANEWO telah meraih berbagai prestasi, baik di tingkat sekolah, kota, maupun provinsi. Beberapa prestasi yang pernah diraih antara lain:</p>
+                <ul>
+                    <li>Juara 1 Lomba PPGD tingkat Kota</li>
+                    <li>Juara 2 Lomba Keterampilan PMR tingkat Provinsi</li>
+                    <li>Pemilihan Duta PMR terbaik</li>
+                    <li>Dan masih banyak lagi prestasi lainnya.</li>
+                </ul>
+                <p><em>Kamu bisa jadi bagian dari prestasi berikutnya! Daftar sekarang!</em></p>`
+        };
+
+
+        // ===== SCRIPT UTAMA =====
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // 1. ISI KONFIGURASI
+            const bgImage = document.getElementById('bgImage');
+            if (bgImage && CONFIG.bgImageUrl) bgImage.src = CONFIG.bgImageUrl;
+
+            const logoPmr = document.getElementById('logoPmr');
+            if (logoPmr) {
+                logoPmr.src = CONFIG.logoPmrUrl;
+                logoPmr.style.width = CONFIG.logoPmrWidth;
+            }
+
+            const logoSekolah = document.getElementById('logoSekolah');
+            if (logoSekolah) {
+                logoSekolah.src = CONFIG.logoSekolahUrl;
+                logoSekolah.style.width = CONFIG.logoSekolahWidth;
+            }
+
+            const strukturImg = document.getElementById('strukturImg');
+            if (strukturImg) strukturImg.src = CONFIG.strukturImgUrl;
+
+            const tataCaraImg = document.getElementById('tataCaraImg');
+            if (tataCaraImg) tataCaraImg.src = CONFIG.tataCaraImgUrl;
+
+            const btnGabung = document.getElementById('btnGabung');
+            const menuForm = document.getElementById('menuForm');
+            if (btnGabung) btnGabung.href = CONFIG.googleFormUrl;
+            if (menuForm) menuForm.href = CONFIG.googleFormUrl;
+
+            const menuWa1 = document.getElementById('menuWa1');
+            if (menuWa1) menuWa1.href = 'https://wa.me/' + CONFIG.waAdmin1;
+
+            const menuWa2 = document.getElementById('menuWa2');
+            if (menuWa2) menuWa2.href = 'https://wa.me/' + CONFIG.waAdmin2;
+
+            const menuTiktok = document.getElementById('menuTiktok');
+            if (menuTiktok) menuTiktok.href = CONFIG.tiktokUrl;
+
+            const menuIg = document.getElementById('menuIg');
+            if (menuIg) menuIg.href = CONFIG.instagramUrl;
+
+            // 2. ISI TEKS PORTOFOLIO
+            document.getElementById('isiApaItu').innerHTML = CONFIG.teksApaItu;
+            document.getElementById('isiTujuan').innerHTML = CONFIG.teksTujuan;
+            document.getElementById('isiMateri').innerHTML = CONFIG.teksMateri;
+            document.getElementById('isiVisiMisi').innerHTML = CONFIG.teksVisiMisi;
+            document.getElementById('isiAjakan').innerHTML = CONFIG.teksAjakan;
+            document.getElementById('isiPrestasi').innerHTML = CONFIG.teksPrestasi;
+
+            // 3. MENU NAVIGASI
+            const navToggle = document.getElementById('navToggle');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+            const menuCloseBtn = document.getElementById('menuCloseBtn');
+            const body = document.body;
+
+            function openMenu() {
+                dropdownMenu.classList.add('active');
+                menuOverlay.classList.add('active');
+                body.classList.add('no-scroll');
+            }
+
+            function closeMenu() {
+                dropdownMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                body.classList.remove('no-scroll');
+            }
+
+            navToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (dropdownMenu.classList.contains('active')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+
+            menuCloseBtn.addEventListener('click', closeMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+
+            document.querySelectorAll('.menu-item').forEach(function(item) {
+                if (item.id !== 'menuAlbum') {
+                    item.addEventListener('click', function() {
+                        setTimeout(closeMenu, 200);
+                    });
+                }
+            });
+
+            // ============================================================
+            // 4. ALBUM (BUKA POPUP SCRAPBOOK)
+            // ============================================================
+            const menuAlbum = document.getElementById('menuAlbum');
+            const scrapbookPopup = document.getElementById('scrapbookPopup');
+            const btnBackPopup = document.getElementById('btnBackPopup');
+
+            function bukaScrapbook() {
+                scrapbookPopup.classList.add('active');
+                body.classList.add('no-scroll');
+            }
+
+            function tutupScrapbook() {
+                scrapbookPopup.classList.remove('active');
+                body.classList.remove('no-scroll');
+            }
+
+            // Tombol Album di menu
+            menuAlbum.addEventListener('click', function(e) {
+                e.preventDefault();
+                bukaScrapbook();
+                // Tutup dropdown menu
+                closeMenu();
+            });
+
+            // Tombol Kembali di popup
+            btnBackPopup.addEventListener('click', function(e) {
+                e.preventDefault();
+                tutupScrapbook();
+            });
+
+            // Tekan ESC untuk tutup popup
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && scrapbookPopup.classList.contains('active')) {
+                    tutupScrapbook();
+                }
+            });
+
+            // ============================================================
+            // 5. SCROLL HINT
+            // ============================================================
+            const scrollHint = document.getElementById('scrollHint');
+            let isHintHidden = false;
+
+            window.addEventListener('scroll', function() {
+                if (!isHintHidden && window.scrollY > 50) {
+                    scrollHint.classList.add('hidden');
+                    isHintHidden = true;
+                }
+            });
+
+            console.log('✅ PMR WIRA SKANEWO website loaded successfully!');
+            console.log('📖 Klik "Album" di menu untuk membuka scrapbook 3D!');
+        });
+    </script>
+
+</body>
+</html>
